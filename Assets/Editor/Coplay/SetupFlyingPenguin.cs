@@ -79,6 +79,13 @@ public class SetupFlyingPenguin
             keyboardInput = flyingPenguin.AddComponent<KeyboardWingInputController>();
             result += "Added KeyboardWingInputController to FlyingPenguin.\n";
         }
+
+        var leapInput = flyingPenguin.GetComponent<LeapWingInputController>();
+        if (leapInput == null)
+        {
+            leapInput = flyingPenguin.AddComponent<LeapWingInputController>();
+            result += "Added LeapWingInputController to FlyingPenguin.\n";
+        }
         EditorUtility.SetDirty(flyingPenguin);
 
         // =============================================
