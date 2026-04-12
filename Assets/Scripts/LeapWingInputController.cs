@@ -29,6 +29,9 @@ public class LeapWingInputController : MonoBehaviour
     public bool scaleSidewaysForceWithStrength = true;
     public AnimationCurve speedToStrengthCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+    [Header("Debug")]
+    public bool logFlapDebug = true;
+
     private FlyingPenguinController flyingPenguinController;
     private readonly HandFlapState leftState = new HandFlapState();
     private readonly HandFlapState rightState = new HandFlapState();
@@ -114,6 +117,11 @@ public class LeapWingInputController : MonoBehaviour
             flyingPenguinController.FlapRight(strength, sidewaysStrength);
         }
 
+        if (logFlapDebug)
+        {
+            LogFlapDebug(hand, isLeftHand, downwardSpeed, strength, sidewaysStrength, state);
+        }
+
         state.armed = false;
         state.nextAllowedTime = Time.time + flapCooldown;
     }
@@ -138,6 +146,26 @@ public class LeapWingInputController : MonoBehaviour
         float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed, downwardSpeed);
         float curveValue = speedToStrengthCurve.Evaluate(normalizedSpeed);
         return Mathf.Lerp(minFlapStrength, maxFlapStrength, curveValue);
+    }
+
+    private void LogFlapDebug(Hand hand, bool isLeftHand, float downwardSpeed, float strength, float sidewaysStrength, HandFlapState state)
+    {
+        string side = isLeftHand ? "Left" : "Right";
+        float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed, downwardSpeed);
+
+        Debug.Log(
+            $"[LeapFlap] side={side} " +
+            $"downwardSpeed={downwardSpeed:F3} " +
+            $"normalizedSpeed={normalizedSpeed:F3} " +
+            $"upwardStrength={strength:F3} " +
+            $"sidewaysStrength={sidewaysStrength:F3} " +
+            $"confidence={hand.Confidence:F3} " +
+            $"palmVelocity=({hand.PalmVelocity.x:F3}, {hand.PalmVelocity.y:F3}, {hand.PalmVelocity.z:F3}) " +
+            $"palmNormal=({hand.PalmNormal.x:F3}, {hand.PalmNormal.y:F3}, {hand.PalmNormal.z:F3}) " +
+            $"armedBeforeTrigger={state.armed} " +
+            $"cooldown={flapCooldown:F3} " +
+            $"nextAllowedTime={state.nextAllowedTime:F3}",
+            this);
     }
 
     private static void ResetHandState(HandFlapState state)

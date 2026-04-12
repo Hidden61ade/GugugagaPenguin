@@ -7,6 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(FlyingPenguinController))]
 public class KeyboardWingInputController : MonoBehaviour
 {
+    [Header("Debug")]
+    public bool logFlapDebug = true;
+
     private FlyingPenguinController flyingPenguinController;
 
     void Start()
@@ -19,11 +22,19 @@ public class KeyboardWingInputController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             flyingPenguinController.FlapLeft();
+            if (logFlapDebug)
+            {
+                Debug.Log("[KeyboardFlap] side=Left key=A upwardStrength=1.000 sidewaysStrength=1.000", this);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             flyingPenguinController.FlapRight();
+            if (logFlapDebug)
+            {
+                Debug.Log("[KeyboardFlap] side=Right key=L upwardStrength=1.000 sidewaysStrength=1.000", this);
+            }
         }
     }
 }
