@@ -101,3 +101,8 @@ InitTestScene*.unity*
 # Coplay
 Packages/Coplay/CoplayLogs/
 .coplayrules.md
+
+
+.vsconfig
+.plastic
+.vscode

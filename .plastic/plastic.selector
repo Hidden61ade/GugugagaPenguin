@@ -1,4 +1,0 @@
-repository "GugugagaPenguin@tj_hidden61ade@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"
