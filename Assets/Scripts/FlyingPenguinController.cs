@@ -1,9 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Controller for FlyingPenguin.
-/// A key: swing left wing + swing legs + apply force right/up
-/// L key: swing right wing + swing legs + apply force left/up
+/// Executes flap actions for FlyingPenguin.
+/// Input sources should call FlapLeft/FlapRight rather than reading input here.
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class FlyingPenguinController : MonoBehaviour
@@ -25,28 +24,27 @@ public class FlyingPenguinController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    public void FlapLeft(float upwardStrength = 1f, float sidewaysStrength = 1f)
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            animator.SetTrigger(SwingLeftTrigger);
-            animator.SetTrigger(SwingLegTrigger);
-            
-            // Left wing swings -> pushes penguin Right and Up
-            // Note: The penguin model faces -Z, so its "Right" is -X (-transform.right)
-            Vector3 forceDir = transform.up * upwardForce - transform.right * sidewaysForce;
-            rb.AddForce(forceDir, ForceMode.Impulse);
-        }
+        animator.SetTrigger(SwingLeftTrigger);
+        animator.SetTrigger(SwingLegTrigger);
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            animator.SetTrigger(SwingRightTrigger);
-            animator.SetTrigger(SwingLegTrigger);
-            
-            // Right wing swings -> pushes penguin Left and Up
-            // Note: The penguin model faces -Z, so its "Left" is +X (transform.right)
-            Vector3 forceDir = transform.up * upwardForce + transform.right * sidewaysForce;
-            rb.AddForce(forceDir, ForceMode.Impulse);
-        }
+        // Left wing swings -> pushes penguin Right and Up
+        // Note: The penguin model faces -Z, so its "Right" is -X (-transform.right)
+        Vector3 forceDir = transform.up * (upwardForce * upwardStrength)
+                         - transform.right * (sidewaysForce * sidewaysStrength);
+        rb.AddForce(forceDir, ForceMode.Impulse);
+    }
+
+    public void FlapRight(float upwardStrength = 1f, float sidewaysStrength = 1f)
+    {
+        animator.SetTrigger(SwingRightTrigger);
+        animator.SetTrigger(SwingLegTrigger);
+
+        // Right wing swings -> pushes penguin Left and Up
+        // Note: The penguin model faces -Z, so its "Left" is +X (transform.right)
+        Vector3 forceDir = transform.up * (upwardForce * upwardStrength)
+                         + transform.right * (sidewaysForce * sidewaysStrength);
+        rb.AddForce(forceDir, ForceMode.Impulse);
     }
 }

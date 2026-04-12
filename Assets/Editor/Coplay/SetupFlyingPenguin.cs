@@ -72,6 +72,13 @@ public class SetupFlyingPenguin
             fpc = flyingPenguin.AddComponent<FlyingPenguinController>();
             result += "Added FlyingPenguinController to FlyingPenguin.\n";
         }
+
+        var keyboardInput = flyingPenguin.GetComponent<KeyboardWingInputController>();
+        if (keyboardInput == null)
+        {
+            keyboardInput = flyingPenguin.AddComponent<KeyboardWingInputController>();
+            result += "Added KeyboardWingInputController to FlyingPenguin.\n";
+        }
         EditorUtility.SetDirty(flyingPenguin);
 
         // =============================================
