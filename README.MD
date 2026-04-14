@@ -1,5 +1,10 @@
 # GugugagaPenguin Progress Notes
 
+注意！请使用Assets/SampleScene这个scene为基础scene 和 Prefabs/FinalFlyingPenguin这个prefab，不然可能会出现leap motion不对的问题。
+
+如果连不上leapmotion且确定驱动已经安装，请调整Service Provider (Desktop)这个game object里面 Advanced子菜单的Service Connection input, IP和Port到正确的版本。macOS请使用IP_Port, 127.0.0.1, 12345.
+
+
 ## Done
 
 ### 1. Stopped tracking local Plastic/VS config files
@@ -54,13 +59,13 @@
 
 ## Not Done Yet
 
-### Real device testing has not been done (Already finished)
+### Real device testing has not been done (Finished)
 
 - Not yet verified with actual Leap/Ultraleap hardware input.
 - Not yet verified that hand tracking data is reaching `LeapWingInputController`.
 - Not yet tuned for real-world gesture thresholds.
 
-### Gesture quality tuning is still pending (Ongoing)
+### Gesture quality tuning is still pending (Finished)
 
 - Current flap detection is a first-pass implementation.
 - Likely needs tuning for:
@@ -71,22 +76,16 @@
   - `maxTrackedDownwardSpeed`
   - `speedToStrengthCurve`
 
-### Animation intensity is not yet linked to flap strength
+### Animation intensity is not yet linked to flap strength (Do we need to do this?)
 
 - Right now strength changes the physics impulse.
 - Animator trigger flow is unchanged.
 - If needed later, add an Animator float parameter to make stronger flaps also look stronger/faster.
 
-### Keyboard fallback policy
+### Keyboard fallback policy (Finished)
 
 - Keyboard input is still kept for testing.
 - Later we should decide whether to:
   - keep both keyboard and Leap enabled
   - disable keyboard when Leap is active
   - switch input sources with a toggle
-
-## Inspector / Scene Notes
-
-- `LeapWingInputController.autoFindProvider` is set in the Unity Inspector on the GameObject that has `LeapWingInputController` attached.
-- Expected object: `FlyingPenguin`.
-- If `Auto Find Provider` is disabled, assign `Leap Provider` manually in the Inspector.
