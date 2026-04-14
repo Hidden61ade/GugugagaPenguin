@@ -31,11 +31,14 @@ public class LeapWingInputController : MonoBehaviour
 
     [Header("Debug")]
     public bool logFlapDebug = true;
+    public bool logTrackingStatus = true;
+    public float trackingStatusLogInterval = 1.5f;
 
     private FlyingPenguinController flyingPenguinController;
     private readonly HandFlapState leftState = new HandFlapState();
     private readonly HandFlapState rightState = new HandFlapState();
     private bool warnedMissingProvider;
+    private float nextTrackingStatusLogTime;
 
     private class HandFlapState
     {
@@ -53,14 +56,23 @@ public class LeapWingInputController : MonoBehaviour
     {
         if (!TryAssignProvider() || leapProvider.CurrentFrame == null)
         {
+            LogTrackingStatus("provider_missing_or_frame_null");
             ResetHandState(leftState);
             ResetHandState(rightState);
             return;
         }
 
         Frame frame = leapProvider.CurrentFrame;
-        ProcessHand(frame.GetHand(Chirality.Left), leftState, true);
-        ProcessHand(frame.GetHand(Chirality.Right), rightState, false);
+        Hand leftHand = frame.GetHand(Chirality.Left);
+        Hand rightHand = frame.GetHand(Chirality.Right);
+
+        if (leftHand == null && rightHand == null)
+        {
+            LogTrackingStatus("frame_ok_but_no_hands");
+        }
+
+        ProcessHand(leftHand, leftState, true);
+        ProcessHand(rightHand, rightState, false);
     }
 
     private bool TryAssignProvider()
@@ -76,6 +88,11 @@ public class LeapWingInputController : MonoBehaviour
         }
 
         leapProvider = Hands.Provider;
+        if (leapProvider != null)
+        {
+            Debug.Log($"LeapWingInputController assigned provider '{leapProvider.name}'.", this);
+        }
+
         if (leapProvider == null && !warnedMissingProvider)
         {
             Debug.LogWarning("LeapWingInputController could not find a LeapProvider in the scene.", this);
@@ -130,11 +147,18 @@ public class LeapWingInputController : MonoBehaviour
     {
         if (hand == null || hand.Confidence < minConfidence)
         {
+            if (hand != null)
+            {
+                LogTrackingStatus(
+                    $"hand_low_confidence side={(hand.IsLeft ? "Left" : "Right")} confidence={hand.Confidence:F3} min={minConfidence:F3}");
+            }
             return false;
         }
 
         if (requirePalmFacingDown && hand.PalmNormal.y > maxPalmNormalY)
         {
+            LogTrackingStatus(
+                $"hand_rejected_by_palm_normal side={(hand.IsLeft ? "Left" : "Right")} palmNormalY={hand.PalmNormal.y:F3} max={maxPalmNormalY:F3}");
             return false;
         }
 
@@ -171,5 +195,22 @@ public class LeapWingInputController : MonoBehaviour
     private static void ResetHandState(HandFlapState state)
     {
         state.armed = false;
+    }
+
+    private void LogTrackingStatus(string status)
+    {
+        if (!logTrackingStatus || Time.time < nextTrackingStatusLogTime)
+        {
+            return;
+        }
+
+        string providerName = leapProvider == null ? "null" : leapProvider.name;
+        int handCount = leapProvider?.CurrentFrame?.Hands?.Count ?? -1;
+
+        Debug.Log(
+            $"[LeapTracking] status={status} provider={providerName} handCount={handCount}",
+            this);
+
+        nextTrackingStatusLogTime = Time.time + Mathf.Max(0.1f, trackingStatusLogInterval);
     }
 }
