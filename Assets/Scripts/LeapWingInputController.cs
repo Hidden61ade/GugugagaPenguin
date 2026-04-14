@@ -1,3 +1,4 @@
+using System;
 using Leap;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ public class LeapWingInputController : MonoBehaviour
     public float minFlapStrength = 0.5f;
     public float maxFlapStrength = 1.5f;
     public bool scaleSidewaysForceWithStrength = true;
+    public float speedSensitivity = 18f;
     public AnimationCurve speedToStrengthCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     [Header("Debug")]
@@ -167,15 +169,16 @@ public class LeapWingInputController : MonoBehaviour
 
     private float EvaluateStrength(float downwardSpeed)
     {
-        float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed, downwardSpeed);
+        float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed / speedSensitivity, downwardSpeed);
         float curveValue = speedToStrengthCurve.Evaluate(normalizedSpeed);
+        Debug.Log(downwardSpeed); Debug.Log(normalizedSpeed); Debug.Log(flapStartDownwardSpeed + " " + maxTrackedDownwardSpeed / speedSensitivity); Debug.Log(curveValue);
         return Mathf.Lerp(minFlapStrength, maxFlapStrength, curveValue);
     }
 
     private void LogFlapDebug(Hand hand, bool isLeftHand, float downwardSpeed, float strength, float sidewaysStrength, HandFlapState state)
     {
         string side = isLeftHand ? "Left" : "Right";
-        float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed, downwardSpeed);
+        float normalizedSpeed = Mathf.InverseLerp(flapStartDownwardSpeed, maxTrackedDownwardSpeed / speedSensitivity, downwardSpeed);
 
         Debug.Log(
             $"[LeapFlap] side={side} " +

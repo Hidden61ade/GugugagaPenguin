@@ -864,18 +864,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Service Provider (Desktop)
       objectReference: {fileID: 0}
-    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
-      propertyPath: _serviceConnectionInput
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
-      propertyPath: _serviceIP
-      value: 127.0.0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
-      propertyPath: _servicePort
-      value: 12345
-      objectReference: {fileID: 0}
     - target: {fileID: 432918, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.28603
@@ -915,6 +903,18 @@ PrefabInstance:
     - target: {fileID: 432918, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
+      propertyPath: _serviceIP
+      value: 127.0.0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
+      propertyPath: _servicePort
+      value: 12345
+      objectReference: {fileID: 0}
+    - target: {fileID: 11435192, guid: b9c7aaf0d314cb847a3b2a20e893f1b6, type: 3}
+      propertyPath: _serviceConnectionInput
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1911,6 +1911,34 @@ PrefabInstance:
       propertyPath: leapProvider
       value: 
       objectReference: {fileID: 1903162675}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: logFlapDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: speedSensitivity
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: logTrackingStatus
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: flapStartDownwardSpeed
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: speedToStrengthCurve.m_Curve.Array.data[0].inSlope
+      value: 2.9716978
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: speedToStrengthCurve.m_Curve.Array.data[0].outSlope
+      value: 2.9716978
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: speedToStrengthCurve.m_Curve.Array.data[0].outWeight
+      value: 0.033333335
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
