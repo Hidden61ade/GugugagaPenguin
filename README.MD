@@ -54,13 +54,13 @@
 
 ## Not Done Yet
 
-### Real device testing has not been done
+### Real device testing has not been done (Already finished)
 
 - Not yet verified with actual Leap/Ultraleap hardware input.
 - Not yet verified that hand tracking data is reaching `LeapWingInputController`.
 - Not yet tuned for real-world gesture thresholds.
 
-### Gesture quality tuning is still pending
+### Gesture quality tuning is still pending (Ongoing)
 
 - Current flap detection is a first-pass implementation.
 - Likely needs tuning for:

@@ -24,8 +24,8 @@ public class LeapWingInputController : MonoBehaviour
 
     [Header("Flap Strength")]
     public float maxTrackedDownwardSpeed = 2.5f;
-    public float minFlapStrength = 1f;
-    public float maxFlapStrength = 2f;
+    public float minFlapStrength = 0.5f;
+    public float maxFlapStrength = 1.5f;
     public bool scaleSidewaysForceWithStrength = true;
     public AnimationCurve speedToStrengthCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
