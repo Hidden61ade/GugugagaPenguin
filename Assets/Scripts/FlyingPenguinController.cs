@@ -20,6 +20,7 @@ public class FlyingPenguinController : MonoBehaviour
     public float glideAcceleration = 4f;
     public float maxForwardSpeed = 11f;
     public Vector3 worldGlideDirection = Vector3.forward;
+    public float launchForwardSpeed = 8f;
 
     [Header("State")]
     public bool inputEnabled = true;
@@ -120,6 +121,7 @@ public class FlyingPenguinController : MonoBehaviour
         else
         {
             rb.WakeUp();
+            rb.AddForce(launchForwardSpeed * rb.mass * transform.forward, ForceMode.Impulse);
         }
     }
 

@@ -32,21 +32,28 @@ public class ThirdPersonCamera : MonoBehaviour
     public Vector3 victoryEulerDelta = new Vector3(8f, 180f, 0f);
 
     [Header("Smoothing")]
-    public float positionSmoothTime = 0.28f;
-    public float rotationSmoothSpeed = 8f;
+    public float positionSmoothFactor = 0.5f;
+    public float rotationSmoothFactor = 0.5f;
 
-    private Vector3 currentLocalOffset;
-    private Quaternion currentLocalRotation = Quaternion.identity;
     private Vector3 desiredLocalOffset;
     private Quaternion desiredLocalRotation = Quaternion.identity;
-    private Vector3 currentVelocity;
+    private Vector3 currentWorldPosition;
+    private Quaternion currentWorldRotation = Quaternion.identity;
     private bool poseInitialized;
     private CameraMode currentMode = CameraMode.Gameplay;
 
-    void Start()
+    void Awake()
     {
         CaptureGameplayPoseFromCurrent();
+    }
+    void Start()
+    {
         SetMode(currentMode, true);
+        if (target != null)
+        {
+            currentWorldPosition = transform.position;
+            currentWorldRotation = transform.rotation;
+        }
     }
 
     public void CaptureGameplayPoseFromCurrent()
@@ -73,11 +80,10 @@ public class ThirdPersonCamera : MonoBehaviour
         desiredLocalOffset = ResolveOffset(mode);
         desiredLocalRotation = Quaternion.Euler(ResolveEuler(mode));
 
-        if (snap)
+        if (snap && target != null)
         {
-            currentLocalOffset = desiredLocalOffset;
-            currentLocalRotation = desiredLocalRotation;
-            currentVelocity = Vector3.zero;
+            currentWorldPosition = target.TransformPoint(desiredLocalOffset);
+            currentWorldRotation = target.rotation * desiredLocalRotation;
             ApplyPoseImmediate();
         }
     }
@@ -87,23 +93,21 @@ public class ThirdPersonCamera : MonoBehaviour
         return currentMode;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (target == null) return;
 
-        currentLocalOffset = Vector3.SmoothDamp(
-            currentLocalOffset,
-            desiredLocalOffset,
-            ref currentVelocity,
-            Mathf.Max(0.01f, positionSmoothTime),
-            Mathf.Infinity,
-            Time.unscaledDeltaTime);
+        // Step 1: Calculate desired world position and rotation (no smoothing)
+        Vector3 desiredWorldPosition = target.TransformPoint(desiredLocalOffset);
+        Quaternion desiredWorldRotation = target.rotation * desiredLocalRotation;
 
-        float rotationT = 1f - Mathf.Exp(-rotationSmoothSpeed * Time.unscaledDeltaTime);
-        currentLocalRotation = Quaternion.Slerp(currentLocalRotation, desiredLocalRotation, rotationT);
+        // Step 2: Linear interpolation smoothing
+        currentWorldPosition = Vector3.Lerp(currentWorldPosition, desiredWorldPosition, positionSmoothFactor);
+        currentWorldRotation = Quaternion.Slerp(currentWorldRotation, desiredWorldRotation, rotationSmoothFactor);
 
-        transform.position = target.TransformPoint(currentLocalOffset);
-        transform.rotation = target.rotation * currentLocalRotation;
+        // Step 3: Apply final position and rotation
+        transform.position = currentWorldPosition;
+        transform.rotation = currentWorldRotation;
     }
 
     private void ApplyPoseImmediate()
@@ -113,8 +117,8 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
         }
 
-        transform.position = target.TransformPoint(currentLocalOffset);
-        transform.rotation = target.rotation * currentLocalRotation;
+        transform.position = currentWorldPosition;
+        transform.rotation = currentWorldRotation;
     }
 
     private Vector3 ResolveOffset(CameraMode mode)

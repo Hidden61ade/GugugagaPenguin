@@ -148,7 +148,7 @@ MonoBehaviour:
   victoryOffsetDelta: {x: 0, y: 2, z: 5}
   victoryEulerDelta: {x: 8, y: 180, z: 0}
   positionSmoothTime: 0.05
-  rotationSmoothSpeed: 8
+  rotationSmoothTime: 0.3
 --- !u!114 &5914439516565441666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +173,6 @@ GameObject:
   m_Component:
   - component: {fileID: 139459916708176941}
   - component: {fileID: 1877855882907019768}
-  - component: {fileID: 1308768421197371669}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -247,11 +246,3 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1308768421197371669
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7641341665876140064}
-  m_Enabled: 1

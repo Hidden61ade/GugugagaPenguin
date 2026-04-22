@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 186098844626494438, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 186098844626494438, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Center.y
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 186098844626494438, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Center.z
+      value: 0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 186098844626494438, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Direction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6212953410590287658, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: m_Name
       value: FinalFlyingPenguin Variant
@@ -51,6 +67,22 @@ PrefabInstance:
     - target: {fileID: 6733735321323273616, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Drag
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Constraints
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: logFlapDebug
