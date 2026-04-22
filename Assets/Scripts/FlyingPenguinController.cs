@@ -74,7 +74,7 @@ public class FlyingPenguinController : MonoBehaviour
         // Left wing swings -> pushes penguin Right and Up
         // Note: The penguin model faces -Z, so its "Right" is -X (-transform.right)
         Vector3 forceDir = transform.up * (upwardForce * upwardStrength)
-                         - transform.right * (sidewaysForce * sidewaysStrength);
+                         + transform.right * (sidewaysForce * sidewaysStrength);
         rb.AddForce(forceDir, ForceMode.Impulse);
         Flapped?.Invoke(FlapSide.Left, upwardStrength);
     }
@@ -93,7 +93,7 @@ public class FlyingPenguinController : MonoBehaviour
         // Right wing swings -> pushes penguin Left and Up
         // Note: The penguin model faces -Z, so its "Left" is +X (transform.right)
         Vector3 forceDir = transform.up * (upwardForce * upwardStrength)
-                         + transform.right * (sidewaysForce * sidewaysStrength);
+                         - transform.right * (sidewaysForce * sidewaysStrength);
         rb.AddForce(forceDir, ForceMode.Impulse);
         Flapped?.Invoke(FlapSide.Right, upwardStrength);
     }
