@@ -119,7 +119,6 @@ public class PenguinGameFlowController : MonoBehaviour
         LoadPresentationAssets();
         BuildUi();
         BuildAudio();
-        BuildFinishGate();
         BindEvents();
 
         ApplyVolume(PlayerPrefs.GetFloat(VolumePrefKey, 0.85f));
@@ -456,11 +455,12 @@ public class PenguinGameFlowController : MonoBehaviour
         float distance = GetRunDistance();
         progressText.text = $"Finish line {Mathf.Clamp(distance, 0f, runDistanceToWin):0}/{runDistanceToWin:0}m";
 
-        if (!finishTriggered && distance >= runDistanceToWin)
-        {
-            EnterVictoryState();
-            return;
-        }
+        // 注释掉距离终止判定，暂时只保留通过碰撞箱结束游戏的功能
+        // if (!finishTriggered && distance >= runDistanceToWin)
+        // {
+        //     EnterVictoryState();
+        //     return;
+        // }
 
         if (penguinTransform.position.y < spawnY - failYDistance)
         {
