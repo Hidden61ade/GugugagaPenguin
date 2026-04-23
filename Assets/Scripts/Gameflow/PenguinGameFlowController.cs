@@ -44,14 +44,14 @@ public class PenguinGameFlowController : MonoBehaviour
     [SerializeField] private float finishGateHeight = 5.5f;
     [SerializeField] private float finishGateWidth = 9f;
 
-    // ── UI — Canvas groups ───────────────────────────────────────────────────
-    [Header("UI – Canvas Groups")]
-    [SerializeField] private CanvasGroup titleGroup;
-    [SerializeField] private CanvasGroup hudGroup;
-    [SerializeField] private CanvasGroup pauseGroup;
-    [SerializeField] private CanvasGroup settingsGroup;
-    [SerializeField] private CanvasGroup creditsGroup;
-    [SerializeField] private CanvasGroup victoryGroup;
+    // ── UI — Panels ──────────────────────────────────────────────────────────
+    [Header("UI – Panels")]
+    [SerializeField] private GameObject titleGroup;
+    [SerializeField] private GameObject hudGroup;
+    [SerializeField] private GameObject pauseGroup;
+    [SerializeField] private GameObject settingsGroup;
+    [SerializeField] private GameObject creditsGroup;
+    [SerializeField] private GameObject victoryGroup;
 
     // ── UI — HUD ─────────────────────────────────────────────────────────────
     [Header("UI – HUD")]
@@ -674,17 +674,13 @@ public class PenguinGameFlowController : MonoBehaviour
         sfxAudioSource.PlayOneShot(clip, volumeScale);
     }
 
-    // ── Canvas group helper ───────────────────────────────────────────────────
-    private static void SetGroupVisible(CanvasGroup group, bool visible)
+    // ── Panel visibility helper ───────────────────────────────────────────────
+    private static void SetGroupVisible(GameObject panel, bool visible)
     {
-        if (group == null)
+        if (panel != null)
         {
-            return;
+            panel.SetActive(visible);
         }
-
-        group.alpha         = visible ? 1f : 0f;
-        group.interactable  = visible;
-        group.blocksRaycasts = visible;
     }
 
     // ── Optional runtime finish gate (3-D geometry) ───────────────────────────
