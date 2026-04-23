@@ -16,6 +16,7 @@ public class FlyingPenguinController : MonoBehaviour
 
     [Header("Physics Settings")]
     public float upwardForce = 10f;
+    public float additionalGravity = 0f;
     public float sidewaysForce = 5f;
     public float glideAcceleration = 4f;
     public float maxForwardSpeed = 11f;
@@ -51,7 +52,7 @@ public class FlyingPenguinController : MonoBehaviour
         }
 
         Vector3 glideDirection = worldGlideDirection.normalized;
-        rb.AddForce(glideDirection * glideAcceleration, ForceMode.Acceleration);
+        rb.AddForce(glideDirection * glideAcceleration+ Vector3.down * additionalGravity, ForceMode.Acceleration);
 
         float forwardSpeed = Vector3.Dot(rb.velocity, glideDirection);
         if (forwardSpeed > maxForwardSpeed)

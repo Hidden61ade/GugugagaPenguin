@@ -61,13 +61,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6768003562460519502}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22543564, y: -0, z: -0, w: 0.97425807}
-  m_LocalPosition: {x: -12.329613, y: 11.64, z: -21.23}
+  m_LocalRotation: {x: 0.06938256, y: -0, z: -0, w: 0.9975901}
+  m_LocalPosition: {x: 0, y: -7, z: -129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5599853998119095810}
-  m_LocalEulerAnglesHint: {x: 26.057, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.957, y: 0, z: 0}
 --- !u!20 &5475440488417374912
 Camera:
   m_ObjectHideFlags: 0
@@ -99,8 +99,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 5
+  far clip plane: 1500
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -147,8 +147,8 @@ MonoBehaviour:
   titleEulerDelta: {x: -8, y: 0, z: 0}
   victoryOffsetDelta: {x: 0, y: 2, z: 5}
   victoryEulerDelta: {x: 8, y: 180, z: 0}
-  positionSmoothTime: 0.05
-  rotationSmoothTime: 0.3
+  positionSmoothFactor: 0.5
+  rotationSmoothFactor: 0.5
 --- !u!114 &5914439516565441666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skyCamera: {fileID: 1877855882907019768}
-  visualTiltX: 8.5
+  visualTiltX: 15
 --- !u!1 &7641341665876140064
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 850
   field of view: 60
   orthographic: 0
   orthographic size: 5
