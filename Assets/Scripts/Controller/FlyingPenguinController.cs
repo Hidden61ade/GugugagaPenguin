@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Executes flap actions for FlyingPenguin.
@@ -34,6 +35,27 @@ public class FlyingPenguinController : MonoBehaviour
     private static readonly int SwingLegTrigger = Animator.StringToHash("SwingLeg");
 
     public event Action<FlapSide, float> Flapped;
+    void Awake()
+    {
+        FlowControlClean.Instance.OnStartRun += () =>
+        {
+            ResetRun(rb.position, rb.rotation, false);
+        };
+        
+        FlowControlClean.Instance.OnStateChanged += (state) =>
+        {
+            if (state == FlowControlClean.FlowState.Playing)
+            {
+                Debug.Log("Enabling input and resetting run");
+                SetInputEnabled(true);
+            }
+            else if (state == FlowControlClean.FlowState.Title)
+            {
+                Debug.Log("Entering title state");
+                SetInputEnabled(false);
+            }
+        };
+    }
 
     void Start()
     {
@@ -52,7 +74,7 @@ public class FlyingPenguinController : MonoBehaviour
         }
 
         Vector3 glideDirection = worldGlideDirection.normalized;
-        rb.AddForce(glideDirection * glideAcceleration+ Vector3.down * additionalGravity, ForceMode.Acceleration);
+        rb.AddForce(glideDirection * glideAcceleration + Vector3.down * additionalGravity, ForceMode.Acceleration);
 
         float forwardSpeed = Vector3.Dot(rb.velocity, glideDirection);
         if (forwardSpeed > maxForwardSpeed)

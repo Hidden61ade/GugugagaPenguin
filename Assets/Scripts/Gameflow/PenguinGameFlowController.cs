@@ -387,7 +387,7 @@ public class PenguinGameFlowController : MonoBehaviour
 
         if (currentState == FlowState.Playing)
         {
-            PlaySfx(flapClip, 0.85f);
+            // PlaySfx(flapClip, 0.85f); 太恐怖了这动静
         }
     }
 
@@ -726,31 +726,6 @@ public class PenguinGameFlowController : MonoBehaviour
     }
 }
 
-// ---------------------------------------------------------------------------
-// Bootstrap — spawns a controller at runtime only when none exists in the scene.
-// If you place PenguinGameFlowController in the scene manually this class does
-// nothing.  Note: a bootstrapped controller has no UI references assigned, so
-// all UI updates are silently skipped.
-// ---------------------------------------------------------------------------
-internal static class PenguinGameBootstrap
-{
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void EnsureFlowController()
-    {
-        if (Object.FindObjectOfType<PenguinGameFlowController>() != null)
-        {
-            return;
-        }
-
-        if (Object.FindObjectOfType<FlyingPenguinController>() == null)
-        {
-            return;
-        }
-
-        GameObject flowRoot = new GameObject("PenguinGameFlow");
-        flowRoot.AddComponent<PenguinGameFlowController>();
-    }
-}
 
 // ---------------------------------------------------------------------------
 // Procedural audio — unchanged utility kept here for the fallback clips.

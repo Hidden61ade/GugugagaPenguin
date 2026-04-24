@@ -42,9 +42,30 @@ public class ThirdPersonCamera : MonoBehaviour
     private bool poseInitialized;
     private CameraMode currentMode = CameraMode.Gameplay;
 
+    bool inited = false;
+    bool oneReached = false;
+
     void Awake()
     {
         CaptureGameplayPoseFromCurrent();
+        FlowControlClean.Instance.OnEnterTitle += () =>
+        {
+            inited = false;
+            SetMode(CameraMode.Title, true);
+        };
+        FlowControlClean.Instance.OnStartRun += () =>
+        {
+            inited = true;
+            SetMode(CameraMode.Gameplay);
+        };
+        FlowControlClean.Instance.OnStateChanged += (state) =>
+        {
+            if (state == FlowControlClean.FlowState.Playing)
+            {
+                // positionSmoothFactor = 1f;
+            }
+        };
+        FlowControlClean.Instance.OnEnterVictory += () => SetMode(CameraMode.Victory);
     }
     void Start()
     {
@@ -96,6 +117,16 @@ public class ThirdPersonCamera : MonoBehaviour
     void Update()
     {
         if (target == null) return;
+
+        if( !oneReached && inited && positionSmoothFactor < 1f)
+        {
+            positionSmoothFactor += positionSmoothFactor * 0.01f; // Gradually increase smoothing factor
+            if(positionSmoothFactor > 1f)
+            {
+                positionSmoothFactor = 1f;
+                oneReached = true;
+            }
+        }
 
         // Step 1: Calculate desired world position and rotation (no smoothing)
         Vector3 desiredWorldPosition = target.TransformPoint(desiredLocalOffset);

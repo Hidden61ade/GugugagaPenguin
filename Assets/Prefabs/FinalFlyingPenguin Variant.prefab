@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalFlyingPenguin Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6212953410590287658, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6733735321323273616, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -70,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: upwardForce
-      value: 20
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: inputEnabled
@@ -78,11 +82,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: sidewaysForce
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: maxForwardSpeed
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
+      propertyPath: additionalGravity
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: glideAcceleration
@@ -90,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: launchForwardSpeed
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: m_Drag
@@ -106,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9076460434608435606, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: m_Interpolate
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9099482078148840192, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: logFlapDebug
@@ -162,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FlyingPenguinController: {fileID: 4401646185422658685}
-  TargetHeight: 110
+  TargetHeight: 150
   rb: {fileID: 3800991678884295536}
 --- !u!54 &3800991678884295536 stripped
 Rigidbody:
