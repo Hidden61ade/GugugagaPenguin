@@ -1452,33 +1452,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1155590601}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartRun
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: FlowControlClean, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199378107128121288, guid: 8dc28aed3814dc142b49537451e36635, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

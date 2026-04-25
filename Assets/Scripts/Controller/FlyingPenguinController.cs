@@ -30,6 +30,9 @@ public class FlyingPenguinController : MonoBehaviour
     private Animator animator;
     private Rigidbody rb;
 
+    private Vector3 spawnPosition;
+    private Quaternion spawnRotation;
+
     private static readonly int SwingLeftTrigger = Animator.StringToHash("SwingLeft");
     private static readonly int SwingRightTrigger = Animator.StringToHash("SwingRight");
     private static readonly int SwingLegTrigger = Animator.StringToHash("SwingLeg");
@@ -37,21 +40,32 @@ public class FlyingPenguinController : MonoBehaviour
     public event Action<FlapSide, float> Flapped;
     void Awake()
     {
+        EnsureReferences();
+
+        // 记录出生点
+        spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
+
         FlowControlClean.Instance.OnStartRun += () =>
         {
-            ResetRun(rb.position, rb.rotation, false);
+            // 从出生点重新开始（解冻物理）
+            ResetRun(spawnPosition, spawnRotation, false);
         };
-        
+
+        FlowControlClean.Instance.OnEnterTitle += () =>
+        {
+            // 返回标题：传送回出生点并冻结
+            ResetRun(spawnPosition, spawnRotation, true);
+        };
+
         FlowControlClean.Instance.OnStateChanged += (state) =>
         {
             if (state == FlowControlClean.FlowState.Playing)
             {
-                Debug.Log("Enabling input and resetting run");
                 SetInputEnabled(true);
             }
             else if (state == FlowControlClean.FlowState.Title)
             {
-                Debug.Log("Entering title state");
                 SetInputEnabled(false);
             }
         };
