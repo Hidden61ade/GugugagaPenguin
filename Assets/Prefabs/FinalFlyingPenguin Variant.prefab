@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: maxForwardSpeed
-      value: 500
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8384590369307106971, guid: 6cc8094c13cbb4b0e85c32d1c69c478f, type: 3}
       propertyPath: additionalGravity

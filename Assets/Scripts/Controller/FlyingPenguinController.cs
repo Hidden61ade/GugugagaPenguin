@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 /// Input sources should call FlapLeft/FlapRight rather than reading input here.
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class FlyingPenguinController : MonoBehaviour
+public partial class FlyingPenguinController : MonoBehaviour
 {
     public enum FlapSide
     {
