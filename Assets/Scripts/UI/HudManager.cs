@@ -261,4 +261,37 @@ public class HudManager : MonoBehaviour
             }
         }
     }
+
+    // ── Shake：受击震动 ──────────────────────────────────────────────────────
+    private Coroutine shakeCoroutine;
+
+    /// <summary>
+    /// 触发 HUD 面板震动。
+    /// </summary>
+    public void Shake(float duration = 0.3f, float magnitude = 12f)
+    {
+        if (shakeCoroutine != null)
+            StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeCoroutine(duration, magnitude));
+    }
+
+    private IEnumerator ShakeCoroutine(float duration, float magnitude)
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        Vector2 originalPos = rt.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = 1f - (elapsed / duration); // 衰减
+            float x = Random.Range(-1f, 1f) * magnitude * t;
+            float y = Random.Range(-1f, 1f) * magnitude * t;
+            rt.anchoredPosition = originalPos + new Vector2(x, y);
+            yield return null;
+        }
+
+        rt.anchoredPosition = originalPos;
+        shakeCoroutine = null;
+    }
 }

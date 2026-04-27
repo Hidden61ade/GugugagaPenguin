@@ -50,6 +50,8 @@ public partial class FlyingPenguinController : MonoBehaviour
         {
             // 从出生点重新开始（解冻物理）
             ResetRun(spawnPosition, spawnRotation, false);
+            // 记录 Level0 入口状态
+            RecordLevelEntry();
         };
 
         FlowControlClean.Instance.OnEnterTitle += () =>
