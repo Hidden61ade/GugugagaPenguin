@@ -1268,10 +1268,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Levels:
   - {fileID: 7576185367994331184, guid: 7efcba8ee1f80e2428725ff15a9a5e2a, type: 3}
-  nextExtendedLevelIndex: 0
   InitialLevelsInstances:
   - {fileID: 1002692964}
   - {fileID: 6793484321518984972}
+  nextExtendedLevelIndex: 0
+  levelLength: 3000
+  floatingOriginThresholdZ: 12000
+  floatingOriginKeepZ: 3000
   m_Player: {fileID: 0}
   MainCamera: {fileID: 0}
 --- !u!1001 &1538832648

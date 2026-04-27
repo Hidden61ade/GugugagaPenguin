@@ -14,7 +14,7 @@ public partial class FlyingPenguinController : MonoBehaviour
         if(other.CompareTag("Coin"))
         {
             Debug.Log("碰到了金币");
-            this.maxForwardSpeed += 20f;
+            this.maxForwardSpeed += 5f;
             maxForwardSpeed = Mathf.Min(maxForwardSpeed, 900); // 限制最大速度
             Destroy(other.gameObject);
         }

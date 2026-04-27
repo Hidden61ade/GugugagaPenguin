@@ -80,6 +80,14 @@ public partial class FlyingPenguinController : MonoBehaviour
         }
     }
 
+    [SerializeField] private float speedCatchUpThreshold = 0.9f; 
+    [SerializeField] private float speedCatchUpDelay = 1.0f;
+    [SerializeField] private float accelerationIncreaseRate = 0.5f;
+    [SerializeField] private float maxAccelerationMultiplier = 3.0f;
+
+    private float lowSpeedTimer = 0f;
+    private float accelerationMultiplier = 1f;
+
     void FixedUpdate()
     {
         if (rb == null || rb.isKinematic || !inputEnabled)
@@ -88,9 +96,36 @@ public partial class FlyingPenguinController : MonoBehaviour
         }
 
         Vector3 glideDirection = worldGlideDirection.normalized;
-        rb.AddForce(glideDirection * glideAcceleration + Vector3.down * additionalGravity, ForceMode.Acceleration);
 
         float forwardSpeed = Vector3.Dot(rb.velocity, glideDirection);
+
+        float targetSpeedThreshold = maxForwardSpeed * speedCatchUpThreshold;
+
+        if (forwardSpeed < targetSpeedThreshold)
+        {
+            lowSpeedTimer += Time.fixedDeltaTime;
+
+            if (lowSpeedTimer >= speedCatchUpDelay)
+            {
+                accelerationMultiplier += accelerationIncreaseRate * Time.fixedDeltaTime;
+                accelerationMultiplier = Mathf.Min(accelerationMultiplier, maxAccelerationMultiplier);
+            }
+        }
+        else
+        {
+            lowSpeedTimer = 0f;
+            accelerationMultiplier = 1f;
+        }
+
+        float currentGlideAcceleration = glideAcceleration * accelerationMultiplier;
+
+        rb.AddForce(
+            glideDirection * currentGlideAcceleration + Vector3.down * additionalGravity,
+            ForceMode.Acceleration
+        );
+
+        forwardSpeed = Vector3.Dot(rb.velocity, glideDirection);
+
         if (forwardSpeed > maxForwardSpeed)
         {
             Vector3 excessVelocity = glideDirection * (forwardSpeed - maxForwardSpeed);
