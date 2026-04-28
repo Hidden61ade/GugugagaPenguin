@@ -38,7 +38,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         // 创建两个 AudioSource：一个循环播 BGM，一个播一次性音效
         bgmSource = gameObject.AddComponent<AudioSource>();
