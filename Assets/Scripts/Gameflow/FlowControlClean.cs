@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 纯净的游戏流程状态机，负责管理游戏的主要状态转换。
@@ -34,6 +33,7 @@ public class FlowControlClean : MonoBehaviour
                 {
                     GameObject singletonObject = new GameObject("FlowControlClean");
                     instance = singletonObject.AddComponent<FlowControlClean>();
+                    DontDestroyOnLoad(singletonObject);
                 }
             }
             return instance;
@@ -188,7 +188,7 @@ public class FlowControlClean : MonoBehaviour
 
     public void ReturnToTitle()
     {
-        SceneManager.LoadScene(0);
+        EnterTitleState();
     }
 
     /// <summary>
