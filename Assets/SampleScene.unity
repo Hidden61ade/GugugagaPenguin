@@ -3089,12 +3089,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc97d56a971235d448fbc3321c37f5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuBGM: {fileID: 0}
-  gameBGM: {fileID: 0}
+  menuBGM: {fileID: 8300000, guid: c4f09ea1e15d4f7469f1050ceaf15553, type: 3}
+  gameBGM: {fileID: 8300000, guid: c4f09ea1e15d4f7469f1050ceaf15553, type: 3}
   bgmVolume: 0.5
-  itemSfx1: {fileID: 0}
-  itemSfx2: {fileID: 0}
+  itemSfx1: {fileID: 8300000, guid: 14d33b25f61603945bf0addc24dea5a2, type: 3}
+  itemSfx2: {fileID: 8300000, guid: a1a107441b466f44e945c2bcc0bd110f, type: 3}
   sfxVolume: 0.8
+  dartHitSfx: {fileID: 8300000, guid: 087ca5761b44a2c41bc47ebae9adc49b, type: 3}
+  dartHitVolume: 1
 --- !u!1 &1776926352
 GameObject:
   m_ObjectHideFlags: 0

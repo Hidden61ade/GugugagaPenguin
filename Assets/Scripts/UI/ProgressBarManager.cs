@@ -11,7 +11,6 @@ public class ProgressBarManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private Image fillImage;
-    [SerializeField] private Image penguinIcon;
 
     [Header("Settings")]
     [SerializeField] private float totalDistance = 15000f;
@@ -19,8 +18,8 @@ public class ProgressBarManager : MonoBehaviour
     private Transform penguinTransform;
     private float lastZ;
     private float accumulatedDistance;
-    private bool wasPlaying;
     private bool initialized;
+    private bool runStarted; // 本轮游戏是否已经开始（从 Title 切换出来后为 true）
 
     public float Progress => Mathf.Clamp01(accumulatedDistance / totalDistance);
 
@@ -36,7 +35,7 @@ public class ProgressBarManager : MonoBehaviour
 
     private void Update()
     {
-        // 延迟初始化，确保企鹅已生成
+        // 延迟初始化
         if (!initialized)
         {
             FlyingPenguinController penguin = FindObjectOfType<FlyingPenguinController>(true);
@@ -48,45 +47,58 @@ public class ProgressBarManager : MonoBehaviour
             }
         }
 
-        if (FlowControlClean.Instance == null)
+        if (FlowControlClean.Instance == null || penguinTransform == null)
             return;
 
-        bool isPlaying = FlowControlClean.Instance.IsPlaying;
+        var state = FlowControlClean.Instance.CurrentState;
 
-        // 状态切换检测：刚进入 Playing → 重置
-        if (isPlaying && !wasPlaying)
+        // Title 状态 → 重置一切，准备下一轮
+        if (state == FlowControlClean.FlowState.Title)
         {
+            if (runStarted)
+            {
+                accumulatedDistance = 0f;
+                runStarted = false;
+                UpdateBar(0f);
+            }
+            SetVisible(false);
+            return;
+        }
+
+        // Victory 状态 → 保持当前进度，不再更新
+        if (state == FlowControlClean.FlowState.Victory)
+        {
+            // 保持显示
+            return;
+        }
+
+        // Playing 或 Transition → 显示并追踪
+        bool isGameplay = state == FlowControlClean.FlowState.Playing
+                       || state == FlowControlClean.FlowState.Transition;
+
+        if (!isGameplay)
+            return;
+
+        // 首次进入游戏（从 Title 来）
+        if (!runStarted)
+        {
+            runStarted = true;
             accumulatedDistance = 0f;
-            if (penguinTransform != null)
-                lastZ = penguinTransform.position.z;
+            lastZ = penguinTransform.position.z;
             SetVisible(true);
             UpdateBar(0f);
             Debug.Log("[ProgressBar] 开始追踪");
         }
-        else if (!isPlaying && wasPlaying)
-        {
-            // 离开 Playing 状态（Victory 等），保持当前进度但不再更新
-        }
 
-        wasPlaying = isPlaying;
-
-        // 仅 Playing 状态更新
-        if (!isPlaying || penguinTransform == null)
-        {
-            // 非 Playing 状态隐藏（Title 状态下）
-            if (FlowControlClean.Instance.IsTitle)
-                SetVisible(false);
-            return;
-        }
-
+        // 追踪 Z 轴正向移动
         float currentZ = penguinTransform.position.z;
         float deltaZ = currentZ - lastZ;
 
-        // 正向移动才累加（忽略浮点原点修正导致的大幅负跳）
         if (deltaZ > 0f)
         {
             accumulatedDistance += deltaZ;
         }
+        // 浮点原点修正导致的大幅负跳不累加（自动忽略）
 
         lastZ = currentZ;
 
@@ -104,16 +116,5 @@ public class ProgressBarManager : MonoBehaviour
     {
         if (fillImage != null)
             fillImage.fillAmount = progress;
-
-        if (penguinIcon != null)
-        {
-            RectTransform iconRt = penguinIcon.GetComponent<RectTransform>();
-            RectTransform barRt = fillImage.GetComponent<RectTransform>().parent as RectTransform;
-            if (barRt != null && iconRt != null)
-            {
-                float barHeight = barRt.rect.height;
-                iconRt.anchoredPosition = new Vector2(iconRt.anchoredPosition.x, progress * barHeight);
-            }
-        }
     }
 }

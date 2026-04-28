@@ -29,7 +29,11 @@ public class DartTarget : MonoBehaviour
 
         // ── 记录标靶得分 ──
         VictoryManager.SetDartBonus(scoreValue);
+        AudioManager.Instance?.PlayDartHitSfx();
         Debug.Log($"[DartTarget] 命中 {gameObject.name}，Dart Bonus = {scoreValue}");
+
+        // ── 立刻禁止坠落检测（防止 RestartFromFall 循环） ──
+        FlowControlClean.Instance.DisableFallCheck();
 
         // ── 让企鹅"钉"在靶子上 ──
         Rigidbody rb = collision.rigidbody;
@@ -43,27 +47,38 @@ public class DartTarget : MonoBehaviour
             Transform penguin = rb.transform;
             penguin.position = hitPoint + transform.forward * 0.5f;
 
-            // 禁用企鹅输入
             FlyingPenguinController ctrl = rb.GetComponent<FlyingPenguinController>();
             if (ctrl != null)
                 ctrl.SetInputEnabled(false);
         }
 
-        // ── 5 秒后进入结算 ──
+        // ── 5 秒后进入结算（用 Realtime，不受 timeScale 影响） ──
         StartCoroutine(VictoryDelayRoutine());
     }
 
     private IEnumerator VictoryDelayRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSecondsRealtime(5f);
 
         // 进入 Victory 状态
         FlowControlClean.Instance.NotifyFinishReached();
 
-        // 显示结算面板
+        // 显示结算面板（等一帧让 VictoryPanel 激活后 Awake 完成）
+        yield return null;
+
         if (VictoryManager.Instance != null)
         {
             VictoryManager.Instance.ShowVictory();
+        }
+        else
+        {
+            Debug.LogWarning("[DartTarget] VictoryManager.Instance is null, trying to find it");
+            VictoryManager vm = FindObjectOfType<VictoryManager>(true);
+            if (vm != null)
+            {
+                vm.gameObject.SetActive(true);
+                vm.ShowVictory();
+            }
         }
     }
 }

@@ -21,6 +21,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip itemSfx2;
     [SerializeField, Range(0f, 1f)] private float sfxVolume = 0.8f;
 
+    [Header("标靶命中音效")]
+    [SerializeField] private AudioClip dartHitSfx;
+    [SerializeField, Range(0f, 1f)] private float dartHitVolume = 1f;
+
     // ── 内部 ──
     private AudioSource bgmSource;
     private AudioSource sfxSource;
@@ -104,6 +108,15 @@ public class AudioManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(clip, sfxVolume);
         }
+    }
+
+    /// <summary>
+    /// 播放标靶命中音效。
+    /// </summary>
+    public void PlayDartHitSfx()
+    {
+        if (dartHitSfx != null)
+            sfxSource.PlayOneShot(dartHitSfx, dartHitVolume);
     }
 
     /// <summary>

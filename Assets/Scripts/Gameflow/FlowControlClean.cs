@@ -61,6 +61,7 @@ public class FlowControlClean : MonoBehaviour
     // ── 运行时状态 ────────────────────────────────────────────────────────────
     private FlowState currentState = FlowState.Title;
     private bool finishTriggered;
+    private bool fallCheckDisabled; // 标靶命中后禁止坠落检测
     private bool leftSeen;
     private bool rightSeen;
     private float runStartUnscaledTime;
@@ -190,10 +191,29 @@ public class FlowControlClean : MonoBehaviour
         EnterTitleState();
     }
 
+    /// <summary>
+    /// 禁止坠落检测（标靶命中后调用）。
+    /// </summary>
+    public void DisableFallCheck()
+    {
+        fallCheckDisabled = true;
+    }
+
     public void NotifyFinishReached()
     {
-        if (currentState != FlowState.Playing || finishTriggered)
+        // 允许从 Playing 或 Transition 进入 Victory（兼容 RestartFromFall 循环）
+        if (finishTriggered)
             return;
+
+        if (currentState != FlowState.Playing && currentState != FlowState.Transition)
+            return;
+
+        // 停止可能正在运行的 Transition 协程
+        if (runRoutine != null)
+        {
+            StopCoroutine(runRoutine);
+            runRoutine = null;
+        }
 
         EnterVictoryState();
     }
@@ -209,6 +229,7 @@ public class FlowControlClean : MonoBehaviour
 
         currentState = FlowState.Title;
         finishTriggered = false;
+        fallCheckDisabled = false;
         leftSeen = false;
         rightSeen = false;
         Time.timeScale = 0f;
@@ -263,7 +284,7 @@ public class FlowControlClean : MonoBehaviour
         float distance = GetRunDistance();
         OnProgressUpdated?.Invoke(distance);
 
-        if (penguinTransform.position.y < spawnY - failYDistance)
+        if (!fallCheckDisabled && penguinTransform.position.y < spawnY - failYDistance)
         {
             RestartFromFall();
             return;
