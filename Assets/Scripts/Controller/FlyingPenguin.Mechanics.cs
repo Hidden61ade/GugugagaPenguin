@@ -66,6 +66,7 @@ public partial class FlyingPenguinController : MonoBehaviour
             this.maxForwardSpeed += 5f;
             maxForwardSpeed = Mathf.Min(maxForwardSpeed, 900);
             HudManager.Instance?.AddScore(10);
+            AudioManager.Instance?.PlayItemSfx();
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("Firework"))
@@ -75,6 +76,7 @@ public partial class FlyingPenguinController : MonoBehaviour
             if (boost == null)
                 boost = gameObject.AddComponent<SpeedBoost>();
             boost.Activate();
+            AudioManager.Instance?.PlayItemSfx();
             Destroy(other.gameObject);
         }
     }
