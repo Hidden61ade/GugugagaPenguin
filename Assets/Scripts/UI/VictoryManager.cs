@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// VictoryPanel 管理器：显示最终得分公式并提供返回标题按钮。
-/// 挂载在 Canvas/VictoryPanel 上。
+/// VictoryPanel 管理器：显示最终得分，按钮直接重启游戏。
 /// </summary>
 public class VictoryManager : MonoBehaviour
 {
@@ -14,47 +13,31 @@ public class VictoryManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreSummaryText;
     [SerializeField] private Button returnButton;
 
-    // ── 得分追踪（静态，跨 panel 激活保留） ──
     private static int dartBonus = 0;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
     }
 
     private void OnEnable()
     {
         if (returnButton != null)
-            returnButton.onClick.AddListener(OnReturnClicked);
+        {
+            returnButton.onClick.RemoveAllListeners();
+            returnButton.onClick.AddListener(OnRestartClicked);
+        }
     }
 
     private void OnDisable()
     {
         if (returnButton != null)
-            returnButton.onClick.RemoveListener(OnReturnClicked);
+            returnButton.onClick.RemoveAllListeners();
     }
 
-    /// <summary>
-    /// 记录标靶得分（由 DartTarget 调用）。
-    /// </summary>
-    public static void SetDartBonus(int bonus)
-    {
-        dartBonus = bonus;
-    }
+    public static void SetDartBonus(int bonus) => dartBonus = bonus;
+    public static void ResetDartBonus() => dartBonus = 0;
 
-    public static void ResetDartBonus()
-    {
-        dartBonus = 0;
-    }
-
-    /// <summary>
-    /// 显示最终结算面板。由外部调用。
-    /// </summary>
     public void ShowVictory()
     {
         int coinScore = HudManager.Instance != null ? HudManager.Instance.CurrentScore : 0;
@@ -73,13 +56,12 @@ public class VictoryManager : MonoBehaviour
                 $"<size=36><b>Final Score = {coinScore} + {lifeBonus} + {dartBonus} = {finalScore}</b></size>";
         }
 
-        // 确保面板激活
         gameObject.SetActive(true);
     }
 
-    private void OnReturnClicked()
+    private void OnRestartClicked()
     {
         ResetDartBonus();
-        FlowControlClean.Instance.ReturnToTitle();
+        FlowControlClean.RestartGame();
     }
 }

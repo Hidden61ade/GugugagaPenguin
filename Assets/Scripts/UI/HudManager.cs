@@ -104,7 +104,7 @@ public class HudManager : MonoBehaviour
     // ── Button：返回开始界面 ──────────────────────────────────────────────────
     private void OnBackButtonClicked()
     {
-        FlowControlClean.Instance.ReturnToTitle();
+        FlowControlClean.RestartGame();
     }
 
     // ── Hand Indicators：拍打旋转反馈 ────────────────────────────────────────

@@ -1,11 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// 全局音频管理器：
-/// - 主菜单 BGM 和游戏 BGM 自动切换
-/// - 道具音效两个轮播（碰第一个道具播 sfx1，碰第二个播 sfx2，如此交替）
-/// 
-/// Inspector 中拖入对应 AudioClip 即可，留空则不播放。
+/// 全局音频管理器：BGM 切换 + 道具音效轮播 + 标靶命中音效。
+/// 不使用 DontDestroyOnLoad，场景重载时自动重建。
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
@@ -25,22 +22,14 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip dartHitSfx;
     [SerializeField, Range(0f, 1f)] private float dartHitVolume = 1f;
 
-    // ── 内部 ──
     private AudioSource bgmSource;
     private AudioSource sfxSource;
-    private bool playFirstSfx = true; // 下一次播放 sfx1？
+    private bool playFirstSfx = true;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
-        // 创建两个 AudioSource：一个循环播 BGM，一个播一次性音效
         bgmSource = gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;
         bgmSource.playOnAwake = false;
@@ -54,22 +43,9 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        // 订阅状态变化
         if (FlowControlClean.Instance != null)
-        {
             FlowControlClean.Instance.OnStateChanged += OnFlowStateChanged;
-        }
-
-        // 初始播放菜单 BGM
         PlayBGM(menuBGM);
-    }
-
-    private void OnDestroy()
-    {
-        if (FlowControlClean.Instance != null)
-        {
-            FlowControlClean.Instance.OnStateChanged -= OnFlowStateChanged;
-        }
     }
 
     private void OnFlowStateChanged(FlowControlClean.FlowState state)
@@ -78,73 +54,41 @@ public class AudioManager : MonoBehaviour
         {
             case FlowControlClean.FlowState.Title:
                 PlayBGM(menuBGM);
-                playFirstSfx = true; // 重新开始轮播
+                playFirstSfx = true;
                 break;
-
             case FlowControlClean.FlowState.Playing:
                 PlayBGM(gameBGM);
                 break;
-
             case FlowControlClean.FlowState.Victory:
-                // Victory 时可以停 BGM 或保持，这里淡出
-                if (bgmSource.isPlaying)
+                if (bgmSource != null && bgmSource.isPlaying)
                     bgmSource.volume = bgmVolume * 0.3f;
                 break;
         }
     }
 
-    // ── 公开接口 ──
-
-    /// <summary>
-    /// 播放道具拾取音效（两个音效交替）。
-    /// 由企鹅碰撞逻辑调用。
-    /// </summary>
     public void PlayItemSfx()
     {
         AudioClip clip = playFirstSfx ? itemSfx1 : itemSfx2;
         playFirstSfx = !playFirstSfx;
-
-        if (clip != null)
-        {
-            sfxSource.PlayOneShot(clip, sfxVolume);
-        }
+        if (clip != null) sfxSource.PlayOneShot(clip, sfxVolume);
     }
 
-    /// <summary>
-    /// 播放标靶命中音效。
-    /// </summary>
     public void PlayDartHitSfx()
     {
-        if (dartHitSfx != null)
-            sfxSource.PlayOneShot(dartHitSfx, dartHitVolume);
+        if (dartHitSfx != null) sfxSource.PlayOneShot(dartHitSfx, dartHitVolume);
     }
 
-    /// <summary>
-    /// 播放任意一次性音效。
-    /// </summary>
     public void PlayOneShotSfx(AudioClip clip, float volume = -1f)
     {
         if (clip == null) return;
         sfxSource.PlayOneShot(clip, volume < 0 ? sfxVolume : volume);
     }
 
-    // ── 内部 ──
-
     private void PlayBGM(AudioClip clip)
     {
-        if (clip == null)
-        {
-            bgmSource.Stop();
-            return;
-        }
-
-        // 已经在播同一首就不重复
-        if (bgmSource.clip == clip && bgmSource.isPlaying)
-        {
-            bgmSource.volume = bgmVolume;
-            return;
-        }
-
+        if (bgmSource == null) return;
+        if (clip == null) { bgmSource.Stop(); return; }
+        if (bgmSource.clip == clip && bgmSource.isPlaying) { bgmSource.volume = bgmVolume; return; }
         bgmSource.clip = clip;
         bgmSource.volume = bgmVolume;
         bgmSource.Play();
